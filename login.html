@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="css/login.css">
+	<title>Login</title>
+</head>
+<body>
+	<div id="header"></div>
+	<script>
+		fetch("header.html")
+		.then(stream => stream.text())
+		.then(text => {document.getElementById('header').innerHTML = text;});
+	</script>
+	<div>
+		<h3>Enter Your Login Info</h3>
+		<form id="login-form">
+			<input type="text" placeholder="Enter Username">
+			<input type="password" placeholder="Enter Password">
+			<button type="submit">Log In</button>
+		</form>
+		<p id="error"></p>
+		<script type="text/javascript">
+		//Intercept form submission, adds logic to check response json to dynamically redirect user.
+		//Referenced from:https://stackoverflow.com/questions/5384712/intercept-a-form-submit-in-javascript-and-prevent-normal-submission
+			function processLogin(e) {
+				if (e.preventDefault) e.preventDefault();
+				var form = document.getElementById("login-form");
+				const data = { submitLogin: true, username: form.elements[0].value, password: form.elements[1].value};
+				fetch("api/loginEnd.php", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						'Accept': 'application/json'
+					},
+					body: JSON.stringify(data),
+				})
+				.then(response => response.json())
+				.then(data => {
+					console.log("Success:", data);
+					if(data["Error"])
+					{
+						document.getElementById("error").innerHTML = data["Error"];
+					}
+					else
+					{
+						//store jwt and username for future authentication
+						localStorage.setItem("jwt", data["jwt"]);
+						localStorage.setItem("username", data["username"]);
+						localStorage.setItem("manager", data["manager"]);
+						console.log("setting manager to "+data["manager"]);
+						//redirect to profile page
+						window.location.replace("profile.html");
+					}
+				})
+				.catch((error) => {
+					console.error("Error:", error);
+				});
+				return false;
+				}
+
+				var form = document.getElementById("login-form");
+				if (form.attachEvent) {
+				form.attachEvent("submit", processLogin);
+				} else {
+				form.addEventListener("submit", processLogin);
+				}
+		</script>
+
+	</div>
+</body>
+</html>

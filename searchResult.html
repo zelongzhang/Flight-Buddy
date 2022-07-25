@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="css/search.css">
+	<title>Search Results</title>
+</head>
+<body>
+	<div id="header"></div>
+	<script type="text/javascript" src="js/functions.js"></script>
+	<script>
+		fetch("header.html")
+		.then(stream => stream.text())
+		.then(text => {document.getElementById('header').innerHTML = text;});
+		if(!checkLogin())
+        {
+            if(window.confirm("You need to be logged in to use this feature."))
+            {
+                location.href = "home.html";
+            }
+            else
+            {
+                location.href = "home.html";
+            }
+        }
+	</script>
+	<div>
+		<h2>Search Results</h2>
+        <script type="text/javascript" src=js/results.js></script>
+        <script type="text/javascript"> window.onload = displayResults()</script>
+
+	</div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="css/home.css">
+	<title>Flight Buddy</title>
+</head>
+<body>
+	<div id="header"></div>
+	<script type="text/javascript" src="js/functions.js"></script>
+	<script>
+		fetch("header.html")
+		.then(stream => stream.text())
+		.then(text => {document.getElementById('header').innerHTML = text;});
+		if(checkLogin())
+		{
+			location.href = "profile.html";
+		}
+	</script>
+	<div>
+		<h2>Flight Buddy</h2>
+		<button tpye="button" id="loginButton">Login</button>
+		<button type="button" id="registerButton">Register</button>
+		<script type="text/javascript">
+			document.getElementById("loginButton").onclick = function()
+			{
+				location.href = "login.html";
+			};
+			document.getElementById("registerButton").onclick = function()
+			{
+				location.href = "register.html";
+			};
+		</script>
+	</div>
+</body>
+</html>

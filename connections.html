@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="css/connections.css">
+	<title>Manage Connections</title>
+</head>
+<body>
+	<div id="header"></div>
+	<script type="text/javascript" src="js/functions.js"></script>
+	<script>
+		fetch("header.html")
+		.then(stream => stream.text())
+		.then(text => {document.getElementById('header').innerHTML = text;});
+        checkLogin();
+        window.onload = getConnections();
+	</script>
+	<div>
+		<h2>Manage Flight Connections</h2>
+        <button id="addConnectionButton">Add New Connection</button>
+        <script>
+            document.getElementById("addConnectionButton").onclick = function()
+			{
+				location.href = "addConnection.html";
+			};
+        </script>
+        <p id="error"></p>
+	</div>
+</body>
+</html>

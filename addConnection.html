@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="css/connections.css">
+	<title>Create New Connection</title>
+</head>
+<body>
+	<div id="header"></div>
+	<script type="text/javascript" src="js/functions.js"></script>
+	<script>
+		fetch("header.html")
+		.then(stream => stream.text())
+		.then(text => {document.getElementById('header').innerHTML = text;});
+        checkLogin();
+	</script>
+	<div>
+		<h2>Create New Connection</h2>
+        <form id=createConnection-form>
+			<input type="text" placeholder="Enter Connection ID">
+            <input type="text" placeholder="Enter Flight Date">
+			<input type="text" placeholder="Enter Departure Time">
+			<input type="text" placeholder="Enter Available Seats">
+			<input type="text" placeholder="Enter Air Route ID">
+            <input type="text" placeholder="Enter Plane ID">
+            <input type="text" placeholder="Enter Price">
+			<button type="submit">Create Connection</button>
+		</form>
+        <p id="error"></p>
+        <script type="text/javascript">
+            //Intercept form submission, adds logic to check response json to dynamically redirect user.
+            //Referenced from:https://stackoverflow.com/questions/5384712/intercept-a-form-submit-in-javascript-and-prevent-normal-submission
+                function processNewFlight(e) {
+                    if (e.preventDefault) e.preventDefault();
+                    var form = document.getElementById("createConnection-form");
+                    const data = { 
+                        submitConnection: true,
+                        username: localStorage.getItem("username"),
+                        id: form.elements[0].value,
+                        date: form.elements[1].value,
+                        time: form.elements[2].value,
+                        availableSeats: form.elements[3].value,
+                        routeId: form.elements[4].value,
+                        airplaneId: form.elements[5].value,
+                        price: form.elements[6].value
+                    };
+                    fetch("api/addConnectionEnd.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Accept': 'application/json',
+                            'Authorization': "Bearer " + localStorage.getItem("jwt")
+                        },
+                        body: JSON.stringify(data),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Success:", data);
+                        if(data["Error"])
+                        {
+                            document.getElementById("error").innerHTML = data["Error"];
+                        }
+                        else
+                        {
+                            location.href = "connections.html";
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                    });
+                    return false;
+                    }
+    
+                    var form = document.getElementById("createConnection-form");
+                    if (form.attachEvent) {
+                    form.attachEvent("submit", processNewFlight);
+                    } else {
+                    form.addEventListener("submit", processNewFlight);
+                    }
+            </script>
+	</div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="css/profile.css">
+	<title>User Profile</title>
+</head>
+<body>
+	<div id="header"></div>
+	<script type="text/javascript" src="js/functions.js"></script>
+	<script>
+		fetch("header.html")
+		.then(stream => stream.text())
+		.then(text => {document.getElementById('header').innerHTML = text;});
+		checkLogin();
+	</script>
+	<div>
+		<h2>User Profile</h2>
+		<script type="text/javascript" src="js/functions.js"></script>
+		<script>
+			window.onload = getProfile();
+		</script>
+	</div>
+</body>
+</html>

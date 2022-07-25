@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="css/register.css">
+	<title>Register</title>
+</head>
+<body>
+	<div id="header"></div>
+	<script>
+		fetch("header.html")
+		.then(stream => stream.text())
+		.then(text => {document.getElementById('header').innerHTML = text;});
+	</script>
+	<div>
+		<h3>Enter Your Information</h3>
+		<form id=register-form>
+			<input type="text" placeholder="Enter Username">
+			<input type="text" placeholder="Enter Email">
+			<input type="text" placeholder="Enter First Name">
+			<input type="text" placeholder="Enter Last Name">
+			<input type="password" placeholder="Enter Password">
+			<input type="password" placeholder="Confirm Password">
+			<button type="submit">Register</button>
+		</form>
+		<p id="error"></p>
+		<script type="text/javascript">
+		//Intercept form submission, adds logic to check response json to dynamically redirect user.
+		//Referenced from:https://stackoverflow.com/questions/5384712/intercept-a-form-submit-in-javascript-and-prevent-normal-submission
+			function processRegister(e) {
+				if (e.preventDefault) e.preventDefault();
+				var form = document.getElementById("register-form");
+				const data = { 
+					submitRegister: true,
+					username: form.elements[0].value,
+					email: form.elements[1].value,
+					fname: form.elements[2].value,
+					lname: form.elements[3].value,
+					password: form.elements[4].value,
+					passwordConfirm: form.elements[5].value
+				};
+				fetch("api/registerEnd.php", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						'Accept': 'application/json'
+					},
+					body: JSON.stringify(data),
+				})
+				.then(response => response.json())
+				.then(data => {
+					console.log("Success:", data);
+					if(data["Error"])
+					{
+						document.getElementById("error").innerHTML = data["Error"];
+					}
+					else
+					{
+						//TODO: Redirect to Login page.
+						document.getElementById("error").innerHTML = data["Message"];
+					}
+				})
+				.catch((error) => {
+					console.error("Error:", error);
+				});
+				return false;
+				}
+
+				var form = document.getElementById("register-form");
+				if (form.attachEvent) {
+				form.attachEvent("submit", processRegister);
+				} else {
+				form.addEventListener("submit", processRegister);
+				}
+		</script>
+	</div>
+</body>
+</html>

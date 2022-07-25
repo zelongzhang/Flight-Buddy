@@ -1,0 +1,29 @@
+@import url("home.css");
+
+label {
+	background-color: transparent;
+	color: white;
+  	border-radius: 4px;
+  	padding: 12px 20px;
+  	outline: none;
+  	display: inline-block;
+    width: 20%;
+    text-align:right;
+
+}
+
+input {
+	background-color: transparent;
+	color: white;
+	border: 1px solid white;
+  	border-radius: 4px;
+  	padding: 12px 20px;
+  	outline: none;
+  	display: inline-block;
+    width: 70%;
+  	margin: auto;
+}
+
+p {
+	margin-bottom: 100px;
+}
